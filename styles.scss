@@ -1,0 +1,87 @@
+// Font
+@import url('https://fonts.googleapis.com/css2?family=Karla:wght@400;700&display=swap');
+
+// Variables
+$crimson: #d7263d;
+$oxford-blue: #02182B;
+$dodger-blue: #0197F6;
+$middle-blue: #68c5db;
+$blue-munsell: #448FA3;
+$white: #ffffff;
+$light-white: #F5F7FB;
+
+// Mixins
+@mixin flexed() {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin btn-default() {
+  
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Karla', sans-serif;
+}
+
+body {
+    color: $oxford-blue;
+    background-color: $light-white;
+}
+
+button {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border: 0;
+    border-radius: 15px;
+    cursor: pointer;
+    max-width: 200px;
+    background-color: $oxford-blue;
+    color: $light-white;
+}
+
+.app {
+    @include flexed();
+    width: 85%;
+    margin: 5rem auto;
+    min-height: 100vh;
+    max-width: 800px
+}
+
+.home {
+    @include flexed();
+    flex-direction: column;
+    gap: 2rem
+}
+
+.quiz {
+
+    margin: 2rem 0;
+
+    button {
+        background: none;
+        color: $oxford-blue;
+        border: 1px solid;
+        width: auto;
+        min-width: 100px;
+        padding: 0.3rem 1.3rem;
+        margin-right: 1rem;
+        margin-top: 1.2rem;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        font-weight: normal;
+    }
+}
+
+.quizzes {
+    @include flexed();
+    flex-direction: column;
+    gap: 4rem;
+}
