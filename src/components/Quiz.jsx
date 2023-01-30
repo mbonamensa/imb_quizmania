@@ -1,4 +1,6 @@
 import { decode } from "html-entities"
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 import AnswerOption from "./AnswerOption"
 import { nanoid } from "nanoid"
 
@@ -6,49 +8,29 @@ import { nanoid } from "nanoid"
 
 
 function Quiz(props) {
-//    const styles = {
-//         // backgroundColor: props.selected ? "#448FA3" : "none",
-//     }
-
-    // const Option = ({ value, styles, selectAnswer }) => {
-    //     return (
-    //         <button style={styles} onClick={selectAnswer}>{value}</button>
-    //     )
-    // }
-
-    const answers = [...props.incorrectAnswers, props.correctAnswer]
-
-    const shuffledAnswers = answers.sort(() => 0.5 - Math.random())  
-
-    const answerElements = shuffledAnswers.map(answer => {
+   
+    // console.log(props.allAnswers)
+    
+    const answerElements = props.allAnswers.map(answer => {
         return <AnswerOption 
-            key={nanoid()}
-            value={answer}
+            key={answer.id}
+            value={decode(answer.answerValue)}
+            selectedAnswer={() => props.selectedAnswer(answer.id, props.quizId)}
+            selected={answer.isSelected}
+            isCorrect={answer.isCorrect}
+            endGame={props.endGame}
         />
     })
-
-    // console.log(shuffledAnswers)
 
     return (
         <>
         <div className="quiz">
-        <h2>{decode(props.question)}</h2>
-            {/* <button onClick={props.selectAnswer} style={styles}>{props.answer}</button>
-            <button onClick={props.selectAnswer} style={styles}>{props.choice1}</button>
-            <button onClick={props.selectAnswer} style={styles}>{props.choice2}</button>
-            <button onClick={props.selectAnswer} style={styles}>{props.choice3}</button>   */}
-
-
-
+        <h2>{props.loading ? <Skeleton /> : decode(props.question)}</h2>
             <div className="answer-options">
-                {answerElements}
-                {/* <AnswerOption value="Hoy"/>
-                <AnswerOption value="Hoy" />
-                <AnswerOption value="Hoy" />
-                <AnswerOption value="Hoy" /> */}
+                {props.loading ? <Skeleton width={150} height={30} count={4} borderRadius={10} containerClassName="answers-skeleton" /> : answerElements}
             </div>
         </div>
-        <hr />
+        {props.loading ? <Skeleton height={2}/> : <hr />}
         </>
     )
 }

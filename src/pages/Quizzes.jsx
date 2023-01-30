@@ -1,4 +1,7 @@
 import { nanoid } from "nanoid"
+import { decode } from "html-entities"
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 import { useEffect, useState } from "react"
 import Quiz from "../components/Quiz"
 
@@ -7,88 +10,196 @@ import Quiz from "../components/Quiz"
 
 function Quizzes() {
 
-    const [selected, setSelected] = useState(false)
     const [quiz, setQuiz] = useState([])
-
+    const [loading, setLoading] = useState(true)
+    const [score, setScore] = useState(0)
+    const [endGame, setEndGame] = useState(false)
+   
+    
     function fetchQuiz() {
         fetch("https://opentdb.com/api.php?amount=5&type=multiple")
         .then(response => response.json())
-        .then(data => setQuiz(data.results))
-        // .then(data => {
-        //     setQuiz({...data, id: nanoid()})
-        // })
+        .then(data => {
+            const unfilteredData = data.results
+    
+            const newQuizData = []
+    
+            for(let i = 0; i < unfilteredData.length; i++) {
+                const unfiltered = unfilteredData[i]
+                const allAnswers = [...unfiltered.incorrect_answers, unfiltered.correct_answer]
+                const shuffleAllAnswers = allAnswers.sort(() => {return (0.5 - Math.random())})
+    
+                const answerObjects = shuffleAllAnswers.map(answer => {
+                    return {
+                        id: nanoid(),
+                        answerValue: answer,
+                        isSelected: false,
+                        isCorrect: false
+                    }
+                })
+    
+                newQuizData.push({
+                    question: (unfiltered.question),
+                    correctAnswer: (unfiltered.correct_answer),
+                    answers: answerObjects,
+                    id: nanoid()
+                })
+            }
+    
+            // setTimeout(() => {
+
+            //     setQuiz(newQuizData)
+            
+            // }, 5000)
+
+            setQuiz(newQuizData)
+            
+        })
+        
+       
+
     }
 
     useEffect(() => {
+
         fetchQuiz()
+  
+       
     }, [])
 
-    function selectAnswer() {
-        setSelected(prevSelection => !prevSelection)
+    function handleLoading() {
+        setTimeout(() => {
+            setLoading(false)
+        }, 5000) 
     }
 
-    // console.log(quiz)
+    useEffect(() => {
+        window.addEventListener("load", handleLoading)
+        return () => window.removeEventListener("load", handleLoading)
+    }, [])
 
+
+    function selectedAnswer(answerId, quizId) {
+  
+        setQuiz(prevQuiz => {
+            
+            return prevQuiz.map(quizElement => {
+                if (quizId === quizElement.id) {
+                    return {
+                        ...quizElement,  
+                        answers: quizElement.answers.map(answer => {
+                            if(answer.id === answerId) {
+                                
+                                return {
+                                    ...answer,
+                                    isSelected: !answer.isSelected
+        
+                                }
+                            } else {
+                                return {
+                                    ...answer,
+                                    isSelected: false
+                                }
+                            }
+                        }) 
+                    }
+                  
+                } else {
+                    return quizElement
+                }
+            })
+        })
+
+        // console.log(`${answerId} and ${quizId} selected!`)
+    }
+
+    function checkAnswers() {
+
+        // const QuizArrayWithSelectedAnswers = [...quiz]
+        
+        // let scoreCount = 0
+        // for (let i = 0; i < QuizArrayWithSelectedAnswers.length; i++) {
+        //     const eachQuiz = QuizArrayWithSelectedAnswers[i]
+
+        //     eachQuiz.answers.map(answer => {
+        //         if(answer.isSelected) {
+        //             if(answer.answerValue === eachQuiz.correctAnswer) {
+        //                 scoreCount += 1
+
+        //             }
+        //         }
+        //     })
+        // }
+
+        // return setScore(scoreCount)
+
+        setQuiz(prevQuiz => {
+            
+            return prevQuiz.map(quizElement => {
+                return {
+                    ...quizElement,
+                    answers: quizElement.answers.map(answer => {
+                        if(answer.isSelected && answer.answerValue === quizElement.correctAnswer) {
+                            return {
+                                ...answer,
+                                isCorrect: true
+                            }
+
+                        } else {
+                            return {
+                                ...answer,
+                                isCorrect: false
+                            }
+                        }
+                       
+                    })
+                }
+
+
+            })
+        })
+
+        setEndGame(true)
+
+    }
+    
+    console.log(quiz)
+    // console.log(answeChecks)
+    
     const quizElements = quiz.map(quizElement => {
         return <Quiz 
-            key={nanoid()}
-            question={quizElement.question}
-            correctAnswer={quizElement.correct_answer}
-            incorrectAnswers={quizElement.incorrect_answers}
+        key={nanoid()}
+        question={quizElement.question}
+        correctAnswer={quizElement.correctAnswer}
+        allAnswers={quizElement.answers}
+        selectedAnswer={selectedAnswer}
+        quizId={quizElement.id}
+        loading={loading}
+        endGame={endGame}
         />
     })
+    
 
     return (
         <div className="quizzes">
             <div className="quizzes--container">
+                {/* { 
+                    loading ? 
+                    (
+                        <>
+                        <h2><Skeleton /></h2>
+                        <div className="answer-options">
+                            <Skeleton width={80} count={4} containerClassName="answers-skeleton" />
+                        </div>
+                        </>
+                        
+                    ) :
+                    quizElements 
+                } */}
+                
                 {quizElements}
-                {/* <Quiz 
-                    question="How would one say goodbye in Spanish?"
-                    answer="Adios"
-                    choice1="Hola"
-                    choice2="Soy"
-                    choice3="Buenos dias"
-                    selected={selected}
-                    selectAnswer={selectAnswer}
-                />
-                <Quiz 
-                    question="Which best selling toy of 1983 caused hysteria, resulting in riots breaking in stores?"
-                    answer="Cabbage Patch Kids"
-                    choice1="Transformers"
-                    choice2="Care Bears"
-                    choice3="Rubik’s Cube"
-                    selected={selected}
-                    selectAnswer={selectAnswer}
-                />
-                <Quiz 
-                    question="What is the hottest planet in our Solar System?"
-                    answer="Mercury"
-                    choice1="Venus"
-                    choice2="Mars"
-                    choice3="Saturn"
-                    selected={selected}
-                    selectAnswer={selectAnswer}
-                />
-                <Quiz 
-                    question="In which country was the caesar salad invented?"
-                    answer="Italy"
-                    choice1="Portugal"
-                    choice2="Mexico"
-                    choice3="France"
-                    selected={selected}
-                    selectAnswer={selectAnswer}
-                />
-                <Quiz 
-                    question="How Many Hearts Does An Octopus Have?"
-                    answer="One"
-                    choice1="Two"
-                    choice2="Three"
-                    choice3="Four"
-                    selected={selected}
-                    selectAnswer={selectAnswer}
-                /> */}
             </div>
-            <button>Check answers</button>
+            {loading ? <Skeleton /> : <button onClick={checkAnswers}>Check answers</button>}
         </div>
     )
 }

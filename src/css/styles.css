@@ -45,7 +45,7 @@ button {
 .quiz {
   margin: 2rem 0;
 }
-.quiz button {
+.quiz .answer-btn {
   background: none;
   color: #02182B;
   border: 1px solid;
@@ -65,4 +65,16 @@ button {
   justify-content: center;
   flex-direction: column;
   gap: 4rem;
+  width: 100%;
+}
+
+.quizzes--container {
+  width: 100%;
+}
+
+.answers-skeleton {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  gap: 0.5rem;
 }/*# sourceMappingURL=styles.css.map */

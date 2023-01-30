@@ -65,7 +65,7 @@ button {
 
     margin: 2rem 0;
 
-    button {
+    .answer-btn {
         background: none;
         color: $oxford-blue;
         border: 1px solid;
@@ -84,4 +84,16 @@ button {
     @include flexed();
     flex-direction: column;
     gap: 4rem;
+    width: 100%;
+}
+
+.quizzes--container {
+    width: 100%;
+}
+
+.answers-skeleton {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    gap: 0.5rem;
 }
