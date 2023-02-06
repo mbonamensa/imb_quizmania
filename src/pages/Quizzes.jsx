@@ -1,6 +1,4 @@
 import { nanoid } from "nanoid"
-import { decode } from "html-entities"
-import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { useEffect, useState } from "react"
 import Quiz from "../components/Quiz"
@@ -46,7 +44,7 @@ function Quizzes() {
                     question: (unfiltered.question),
                     correctAnswer: (unfiltered.correct_answer),
                     answers: answerObjects,
-                    hasSeletedAnswer: false,
+                    hasSelectedAnswer: false,
                     id: nanoid()
                 })
             }
@@ -62,10 +60,19 @@ function Quizzes() {
        
     }, [])
 
+    useEffect(() => {
+        // const quizClone = [...quiz]
+        const allAnswerschecked = quiz.every(quiz => quiz.hasSelectedAnswer)
+        if(allAnswerschecked) {
+            setAllAnswersSelected(prev => !prev)
+        }
+    }, [quiz])
+
 
     function startQuiz() {
         setQuizStart(true)
         fetchQuiz()
+        setAllAnswersSelected(false)
         setEndQuiz(false)
     }
 
@@ -77,7 +84,7 @@ function Quizzes() {
                 if (quizId === quizElement.id) {
                     return {
                         ...quizElement, 
-                        hasSeletedAnswer: !quizElement.hasSeletedAnswer, 
+                        hasSelectedAnswer: !quizElement.hasSelectedAnswer, 
                         answers: quizElement.answers.map(answer => {
                             if(answer.id === answerId) {
                                 
@@ -102,15 +109,6 @@ function Quizzes() {
         })
     }
 
-    function handleAllAnswersSelected() {
-        // const quizClone = [...quiz]
-        const allAnswerschecked = quiz.every(quiz => quiz.hasSeletedAnswer)
-        if(allAnswerschecked) {
-            setAllAnswersSelected(true)
-        }
-        // console.log(allAnswerschecked)
-    }
-  
 
     function countScores() {
         const QuizArrayWithSelectedAnswers = [...quiz]
@@ -132,7 +130,7 @@ function Quizzes() {
         return setScore(scoreCount)
     }
 
-    // console.log(allAnswersSelected)
+    console.log(allAnswersSelected)
 
     function checkAnswers() {
         
