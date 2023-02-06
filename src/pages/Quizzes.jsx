@@ -4,6 +4,7 @@ import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { useEffect, useState } from "react"
 import Quiz from "../components/Quiz"
+import Welcome from "./Welcome"
 
 
 
@@ -11,12 +12,15 @@ import Quiz from "../components/Quiz"
 function Quizzes() {
 
     const [quiz, setQuiz] = useState([])
+    const [quizStart, setQuizStart] = useState(false)
     const [loading, setLoading] = useState(true)
+    const [allAnswersSelected, setAllAnswersSelected] = useState(false)
     const [score, setScore] = useState(0)
-    const [endGame, setEndGame] = useState(false)
+    const [endQuiz, setEndQuiz] = useState(false)
    
     
     function fetchQuiz() {
+        setLoading(true)
         fetch("https://opentdb.com/api.php?amount=5&type=multiple")
         .then(response => response.json())
         .then(data => {
@@ -34,7 +38,7 @@ function Quizzes() {
                         id: nanoid(),
                         answerValue: answer,
                         isSelected: false,
-                        isCorrect: false
+                        isCorrect: answer === unfiltered.correct_answer ? true : false
                     }
                 })
     
@@ -42,42 +46,28 @@ function Quizzes() {
                     question: (unfiltered.question),
                     correctAnswer: (unfiltered.correct_answer),
                     answers: answerObjects,
+                    hasSeletedAnswer: false,
                     id: nanoid()
                 })
             }
-    
-            // setTimeout(() => {
-
-            //     setQuiz(newQuizData)
-            
-            // }, 5000)
-
             setQuiz(newQuizData)
+            setLoading(false)
             
         })
-        
-       
-
     }
 
     useEffect(() => {
 
         fetchQuiz()
-  
        
     }, [])
 
-    function handleLoading() {
-        setTimeout(() => {
-            setLoading(false)
-        }, 5000) 
+
+    function startQuiz() {
+        setQuizStart(true)
+        fetchQuiz()
+        setEndQuiz(false)
     }
-
-    useEffect(() => {
-        window.addEventListener("load", handleLoading)
-        return () => window.removeEventListener("load", handleLoading)
-    }, [])
-
 
     function selectedAnswer(answerId, quizId) {
   
@@ -86,7 +76,8 @@ function Quizzes() {
             return prevQuiz.map(quizElement => {
                 if (quizId === quizElement.id) {
                     return {
-                        ...quizElement,  
+                        ...quizElement, 
+                        hasSeletedAnswer: !quizElement.hasSeletedAnswer, 
                         answers: quizElement.answers.map(answer => {
                             if(answer.id === answerId) {
                                 
@@ -109,62 +100,48 @@ function Quizzes() {
                 }
             })
         })
-
-        // console.log(`${answerId} and ${quizId} selected!`)
     }
 
-    function checkAnswers() {
+    function handleAllAnswersSelected() {
+        // const quizClone = [...quiz]
+        const allAnswerschecked = quiz.every(quiz => quiz.hasSeletedAnswer)
+        if(allAnswerschecked) {
+            setAllAnswersSelected(true)
+        }
+        // console.log(allAnswerschecked)
+    }
+  
 
-        // const QuizArrayWithSelectedAnswers = [...quiz]
+    function countScores() {
+        const QuizArrayWithSelectedAnswers = [...quiz]
         
-        // let scoreCount = 0
-        // for (let i = 0; i < QuizArrayWithSelectedAnswers.length; i++) {
-        //     const eachQuiz = QuizArrayWithSelectedAnswers[i]
+        let scoreCount = 0
+        for (let i = 0; i < QuizArrayWithSelectedAnswers.length; i++) {
+            const eachQuiz = QuizArrayWithSelectedAnswers[i]
 
-        //     eachQuiz.answers.map(answer => {
-        //         if(answer.isSelected) {
-        //             if(answer.answerValue === eachQuiz.correctAnswer) {
-        //                 scoreCount += 1
+            eachQuiz.answers.map(answer => {
+                if(answer.isSelected) {
+                    if(answer.answerValue === eachQuiz.correctAnswer) {
+                        scoreCount += 1
 
-        //             }
-        //         }
-        //     })
-        // }
-
-        // return setScore(scoreCount)
-
-        setQuiz(prevQuiz => {
-            
-            return prevQuiz.map(quizElement => {
-                return {
-                    ...quizElement,
-                    answers: quizElement.answers.map(answer => {
-                        if(answer.isSelected && answer.answerValue === quizElement.correctAnswer) {
-                            return {
-                                ...answer,
-                                isCorrect: true
-                            }
-
-                        } else {
-                            return {
-                                ...answer,
-                                isCorrect: false
-                            }
-                        }
-                       
-                    })
+                    }
                 }
-
-
             })
-        })
+        }
 
-        setEndGame(true)
+        return setScore(scoreCount)
+    }
+
+    // console.log(allAnswersSelected)
+
+    function checkAnswers() {
+        
+        setEndQuiz(true)
+        countScores()
 
     }
     
     console.log(quiz)
-    // console.log(answeChecks)
     
     const quizElements = quiz.map(quizElement => {
         return <Quiz 
@@ -175,31 +152,37 @@ function Quizzes() {
         selectedAnswer={selectedAnswer}
         quizId={quizElement.id}
         loading={loading}
-        endGame={endGame}
+        endQuiz={endQuiz}
         />
     })
     
+    const buttonStyle = {
+        cursor: allAnswersSelected ? "pointer" : "not-allowed",
+        opacity: allAnswersSelected ? "1" : "0.8"
+    }
 
     return (
         <div className="quizzes">
-            <div className="quizzes--container">
-                {/* { 
-                    loading ? 
-                    (
-                        <>
-                        <h2><Skeleton /></h2>
-                        <div className="answer-options">
-                            <Skeleton width={80} count={4} containerClassName="answers-skeleton" />
-                        </div>
-                        </>
-                        
-                    ) :
-                    quizElements 
-                } */}
+            {quizStart ?
                 
-                {quizElements}
-            </div>
-            {loading ? <Skeleton /> : <button onClick={checkAnswers}>Check answers</button>}
+                (  <>
+                    <div className="quizzes--container">                
+                        {quizElements}
+                    </div>
+                    <div className="checks">
+                        {endQuiz && <p>You scored {score}/5</p>}
+                        <button 
+                            disabled={allAnswersSelected ? false : true} 
+                            onClick={endQuiz ? startQuiz : checkAnswers}
+                            style={buttonStyle }
+                        >{endQuiz ? "Play again" : "Check answers"}</button>
+                    </div>
+                   
+                    </>
+                )
+                :
+                <Welcome startQuiz={startQuiz}/>
+            }
         </div>
     )
 }

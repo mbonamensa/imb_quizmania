@@ -1,12 +1,12 @@
 import "./css/styles.css"
-import Home from "./pages/Home"
+import Home from "./pages/Welcome"
 import Quizzes from "./pages/Quizzes"
 
 
 function App() {
+    
     return (
         <div className="app">
-            {/* <Home /> */}
             <Quizzes />
         </div>
     )

@@ -8,8 +8,6 @@ import { nanoid } from "nanoid"
 
 
 function Quiz(props) {
-   
-    // console.log(props.allAnswers)
     
     const answerElements = props.allAnswers.map(answer => {
         return <AnswerOption 
@@ -18,7 +16,7 @@ function Quiz(props) {
             selectedAnswer={() => props.selectedAnswer(answer.id, props.quizId)}
             selected={answer.isSelected}
             isCorrect={answer.isCorrect}
-            endGame={props.endGame}
+            endQuiz={props.endQuiz}
         />
     })
 

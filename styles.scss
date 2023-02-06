@@ -9,6 +9,7 @@ $middle-blue: #68c5db;
 $blue-munsell: #448FA3;
 $white: #ffffff;
 $light-white: #F5F7FB;
+$light-oxford-blue: #02182b66;
 
 // Mixins
 @mixin flexed() {
@@ -42,23 +43,27 @@ button {
     border: 0;
     border-radius: 15px;
     cursor: pointer;
-    max-width: 200px;
+    max-width: 250px;
     background-color: $oxford-blue;
     color: $light-white;
 }
 
 .app {
     @include flexed();
-    width: 85%;
-    margin: 5rem auto;
+    // width: 85%;
+    // margin: 5rem auto;
     min-height: 100vh;
-    max-width: 800px
+    // max-width: 800px
 }
 
 .home {
     @include flexed();
     flex-direction: column;
-    gap: 2rem
+    gap: 2rem;
+
+    h1 {
+        text-align: center;
+    }
 }
 
 .quiz {
@@ -76,15 +81,23 @@ button {
         margin-top: 1.2rem;
         border-radius: 10px;
         font-size: 0.9rem;
-        font-weight: normal;
+        font-weight: bold;
+        max-width: none;
     }
+}
+
+.answer-options {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
 }
 
 .quizzes {
     @include flexed();
     flex-direction: column;
     gap: 4rem;
-    width: 100%;
+    width: 85%;
+    margin: 5rem 0;
 }
 
 .quizzes--container {
@@ -96,4 +109,14 @@ button {
     justify-content: space-between;
     margin-top: 1rem;
     gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.checks {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
