@@ -44,7 +44,6 @@ function Quizzes() {
                     question: (unfiltered.question),
                     correctAnswer: (unfiltered.correct_answer),
                     answers: answerObjects,
-                    hasSelectedAnswer: false,
                     id: nanoid()
                 })
             }
@@ -55,17 +54,22 @@ function Quizzes() {
     }
 
     useEffect(() => {
-
-        fetchQuiz()
-       
+        fetchQuiz()   
     }, [])
 
     useEffect(() => {
-        // const quizClone = [...quiz]
-        const allAnswerschecked = quiz.every(quiz => quiz.hasSelectedAnswer)
+
+        const allAnswerschecked = quiz.every(quizElement => {
+           return quizElement.answers.some(answer => answer.isSelected)
+        })
+
+        console.log(allAnswerschecked)
         if(allAnswerschecked) {
-            setAllAnswersSelected(prev => !prev)
+            setAllAnswersSelected(true)
+        }else {
+            setAllAnswersSelected(false)
         }
+
     }, [quiz])
 
 
@@ -84,7 +88,6 @@ function Quizzes() {
                 if (quizId === quizElement.id) {
                     return {
                         ...quizElement, 
-                        hasSelectedAnswer: !quizElement.hasSelectedAnswer, 
                         answers: quizElement.answers.map(answer => {
                             if(answer.id === answerId) {
                                 
@@ -129,8 +132,6 @@ function Quizzes() {
 
         return setScore(scoreCount)
     }
-
-    console.log(allAnswersSelected)
 
     function checkAnswers() {
         
