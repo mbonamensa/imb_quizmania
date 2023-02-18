@@ -24,6 +24,10 @@ button {
   color: #F5F7FB;
 }
 
+.check-btn:hover {
+  color: #bdcded;
+}
+
 .app {
   display: flex;
   align-items: center;
@@ -58,6 +62,11 @@ button {
   font-size: 0.9rem;
   font-weight: bold;
   max-width: none;
+  transition: 0.2s ease-in-out;
+}
+.quiz .answer-btn:hover {
+  background-color: #448FA3;
+  border-color: #448FA3;
 }
 
 .answer-options {

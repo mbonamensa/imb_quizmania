@@ -170,7 +170,8 @@ function Quizzes() {
                     </div>
                     <div className="checks">
                         {endQuiz && <p>You scored {score}/5</p>}
-                        <button 
+                        <button
+                            className="check-btn" 
                             disabled={allAnswersSelected ? false : true} 
                             onClick={endQuiz ? startQuiz : checkAnswers}
                             style={buttonStyle }

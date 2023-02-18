@@ -18,10 +18,6 @@ $light-oxford-blue: #02182b66;
     justify-content: center;
 }
 
-@mixin btn-default() {
-  
-}
-
 
 * {
     margin: 0;
@@ -48,12 +44,13 @@ button {
     color: $light-white;
 }
 
+.check-btn:hover {
+    color: #bdcded;
+}
+
 .app {
     @include flexed();
-    // width: 85%;
-    // margin: 5rem auto;
     min-height: 100vh;
-    // max-width: 800px
 }
 
 .home {
@@ -83,6 +80,12 @@ button {
         font-size: 0.9rem;
         font-weight: bold;
         max-width: none;
+        transition: 0.2s ease-in-out;
+
+        &:hover {
+            background-color: $blue-munsell;
+            border-color: $blue-munsell;
+        }
     }
 }
 
