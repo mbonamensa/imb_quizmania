@@ -21,15 +21,41 @@ function Quiz(props) {
         />
     })
 
+
     return (
         <>
         <div className="quiz">
-        <h2>{props.loading ? <Skeleton /> : decode(props.question)}</h2>
+            <h2>
+                {
+                props.loading ? 
+                <Skeleton 
+                baseColor={props.darkmode ? "#353536" : "#ebebeb"} 
+                highlightColor={props.darkmode ? "#403e3e" : "#f5f5f5"}
+                /> 
+                : decode(props.question)
+                }
+            </h2>
             <div className="answer-options">
-                {props.loading ? <Skeleton width={150} height={30} count={4} borderRadius={10} containerClassName="answers-skeleton" /> : answerElements}
+                {
+                props.loading ? 
+                <Skeleton 
+                width={150} 
+                height={30} 
+                count={4} 
+                borderRadius={10} 
+                baseColor={props.darkmode ? "#353536" : "#ebebeb"} 
+                highlightColor={props.darkmode ? "#403e3e" : "#f5f5f5"}
+                containerClassName="answers-skeleton" 
+                /> 
+                : answerElements
+                }
             </div>
         </div>
-        {props.loading ? <Skeleton height={2}/> : <hr />}
+        {props.loading ? <Skeleton 
+        height={2}
+        baseColor={props.darkmode ? "#353536" : "#ebebeb"} 
+        highlightColor={props.darkmode ? "#403e3e" : "#f5f5f5"}
+        /> : <hr />}
         </>
     )
 }

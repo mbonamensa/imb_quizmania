@@ -12,13 +12,12 @@ function Quizzes() {
 
     const [quiz, setQuiz] = useState([])
     const [quizStart, setQuizStart] = useState(false)
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
     const [allAnswersSelected, setAllAnswersSelected] = useState(false)
     const [score, setScore] = useState(0)
     const [endQuiz, setEndQuiz] = useState(false)
     const [darkmode, setDarkmode] = useState(() => checkUserDarkTheme() ? true : false)
-    // const [darkmode, setDarkmode] = useState(false)
-   
+
     
     function fetchQuiz() {
         setLoading(true)
@@ -76,17 +75,18 @@ function Quizzes() {
     }, [quiz])
 
     useEffect(() => {
+
         if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
 
             document.body.classList.toggle("light")
-        }else {
+        }else if (window.matchMedia("(prefers-color-scheme: light)").matches){
 
             document.body.classList.toggle("dark")
         }
-
-        
+   
         
     }, [darkmode])
+
     
     useEffect(() => {
         checkUserDarkTheme()
@@ -96,6 +96,7 @@ function Quizzes() {
     function checkUserDarkTheme() {
        return (window.matchMedia("(prefers-color-scheme: dark)").matches)
     }
+
 
     function toggleTheme() {
         setDarkmode(prevMode => !prevMode)
@@ -193,7 +194,13 @@ function Quizzes() {
 
     return (
         <div className="quizzes">
-            <button className="theme-icon-container" onClick={toggleTheme}>{darkmode ? <MdOutlineLightMode /> : <MdOutlineDarkMode />}</button>
+
+                <button className="theme-icon-container" onClick={toggleTheme}>Toggle theme {darkmode ? <MdOutlineLightMode /> : <MdOutlineDarkMode />}</button>
+
+            {/* <div className="theme-container">
+                <p>Toggle theme</p>
+                <button className="theme-icon-container" onClick={toggleTheme}>{darkmode ? <MdOutlineLightMode /> : <MdOutlineDarkMode />}</button>
+            </div> */}
             {quizStart ?
                 
                 (  <>

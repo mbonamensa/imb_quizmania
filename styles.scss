@@ -129,10 +129,6 @@ body {
             color: $white;
         }
 
-        &:hover {
-            background-color: $blue-munsell;
-            border-color: $blue-munsell;
-        }
     }
 }
 
@@ -173,15 +169,20 @@ body {
 
 .theme-icon-container {
     background-color: transparent;
-    border: 2px solid $oxford-blue;
-    border-radius: 50%;
-    padding: 0.5rem;
-    font-size: 0;
+    border: 2px solid #02182B;
+    border-radius: 50px;
+    padding: 0.2rem 1rem;
     align-self: flex-end;
     cursor: pointer;
+    color: $oxford-blue;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 
     @include darkmode() {
         border-color: $light-white;
+        color: $light-white;
+
     }
 
     svg {
@@ -215,6 +216,7 @@ body {
 
     .theme-icon-container {
         border-color: $light-white;
+        color: $light-white;
     
         svg {
             fill: $light-white;
@@ -244,6 +246,7 @@ body {
 
     .theme-icon-container {
         border-color: $oxford-blue;
+        color: $oxford-blue;
     
         svg {
             fill: $oxford-blue;
