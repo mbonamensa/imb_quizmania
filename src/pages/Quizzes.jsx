@@ -3,6 +3,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import { useEffect, useState } from "react"
 import Quiz from "../components/Quiz"
 import Welcome from "./Welcome"
+import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md"
 
 
 
@@ -15,6 +16,8 @@ function Quizzes() {
     const [allAnswersSelected, setAllAnswersSelected] = useState(false)
     const [score, setScore] = useState(0)
     const [endQuiz, setEndQuiz] = useState(false)
+    const [darkmode, setDarkmode] = useState(() => checkUserDarkTheme() ? true : false)
+    // const [darkmode, setDarkmode] = useState(false)
    
     
     function fetchQuiz() {
@@ -63,7 +66,7 @@ function Quizzes() {
            return quizElement.answers.some(answer => answer.isSelected)
         })
 
-        console.log(allAnswerschecked)
+        // console.log(allAnswerschecked)
         if(allAnswerschecked) {
             setAllAnswersSelected(true)
         }else {
@@ -72,6 +75,33 @@ function Quizzes() {
 
     }, [quiz])
 
+    useEffect(() => {
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+
+            document.body.classList.toggle("light")
+        }else {
+
+            document.body.classList.toggle("dark")
+        }
+
+        
+        
+    }, [darkmode])
+    
+    useEffect(() => {
+        checkUserDarkTheme()
+
+    })
+
+    function checkUserDarkTheme() {
+       return (window.matchMedia("(prefers-color-scheme: dark)").matches)
+    }
+
+    function toggleTheme() {
+        setDarkmode(prevMode => !prevMode)
+    }
+
+    console.log(darkmode)
 
     function startQuiz() {
         setQuizStart(true)
@@ -140,7 +170,7 @@ function Quizzes() {
 
     }
     
-    console.log(quiz)
+    // console.log(quiz)
     
     const quizElements = quiz.map(quizElement => {
         return <Quiz 
@@ -152,6 +182,7 @@ function Quizzes() {
         quizId={quizElement.id}
         loading={loading}
         endQuiz={endQuiz}
+        darkmode={darkmode}
         />
     })
     
@@ -162,6 +193,7 @@ function Quizzes() {
 
     return (
         <div className="quizzes">
+            <button className="theme-icon-container" onClick={toggleTheme}>{darkmode ? <MdOutlineLightMode /> : <MdOutlineDarkMode />}</button>
             {quizStart ?
                 
                 (  <>

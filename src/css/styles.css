@@ -10,8 +10,14 @@ body {
   color: #02182B;
   background-color: #F5F7FB;
 }
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #02182B;
+    color: #ffffff;
+  }
+}
 
-button {
+.check-btn {
   width: 100%;
   padding: 0.8rem;
   font-size: 1rem;
@@ -23,9 +29,19 @@ button {
   background-color: #02182B;
   color: #F5F7FB;
 }
-
+@media (prefers-color-scheme: dark) {
+  .check-btn {
+    background-color: #68c5db;
+    color: #02182B;
+  }
+}
 .check-btn:hover {
   color: #bdcded;
+}
+@media (prefers-color-scheme: dark) {
+  .check-btn:hover {
+    color: rgba(2, 24, 43, 0.4);
+  }
 }
 
 .app {
@@ -63,6 +79,12 @@ button {
   font-weight: bold;
   max-width: none;
   transition: 0.2s ease-in-out;
+}
+@media (prefers-color-scheme: dark) {
+  .quiz .answer-btn {
+    border-color: #4D5B9E;
+    color: #ffffff;
+  }
 }
 .quiz .answer-btn:hover {
   background-color: #448FA3;
@@ -104,4 +126,72 @@ button {
   justify-content: space-around;
   flex-wrap: wrap;
   gap: 1rem;
+}
+
+.theme-icon-container {
+  background-color: transparent;
+  border: 2px solid #02182B;
+  border-radius: 50%;
+  padding: 0.5rem;
+  font-size: 0;
+  align-self: flex-end;
+  cursor: pointer;
+}
+@media (prefers-color-scheme: dark) {
+  .theme-icon-container {
+    border-color: #F5F7FB;
+  }
+}
+.theme-icon-container svg {
+  fill: #02182B;
+  font-size: 2rem;
+}
+@media (prefers-color-scheme: dark) {
+  .theme-icon-container svg {
+    fill: #F5F7FB;
+  }
+}
+
+.dark {
+  background-color: #02182B;
+  color: #ffffff;
+}
+.dark .check-btn {
+  background-color: #68c5db;
+  color: #02182B;
+}
+.dark .check-btn:hover {
+  color: rgba(2, 24, 43, 0.4);
+}
+.dark .answer-btn {
+  border-color: #4D5B9E;
+  color: #ffffff;
+}
+.dark .theme-icon-container {
+  border-color: #F5F7FB;
+}
+.dark .theme-icon-container svg {
+  fill: #F5F7FB;
+}
+
+.light {
+  background-color: #F5F7FB;
+  color: #02182B;
+}
+.light .check-btn {
+  background-color: #02182B;
+  color: #F5F7FB;
+}
+.light .check-btn:hover {
+  color: #bdcded;
+}
+.light .answer-btn {
+  border-color: #02182B;
+  color: #02182B;
+}
+.light .theme-icon-container {
+  border-color: #02182B;
+}
+.light .theme-icon-container svg {
+  fill: #02182B;
 }/*# sourceMappingURL=styles.css.map */

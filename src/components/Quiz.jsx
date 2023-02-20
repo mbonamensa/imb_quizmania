@@ -17,6 +17,7 @@ function Quiz(props) {
             selected={answer.isSelected}
             isCorrect={answer.isCorrect}
             endQuiz={props.endQuiz}
+            darkmode={props.darkmode}
         />
     })
 

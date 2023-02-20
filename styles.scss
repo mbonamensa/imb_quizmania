@@ -10,12 +10,21 @@ $blue-munsell: #448FA3;
 $white: #ffffff;
 $light-white: #F5F7FB;
 $light-oxford-blue: #02182b66;
+$light-dark-blue: #4D5B9E;
 
 // Mixins
 @mixin flexed() {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+@mixin darkmode() {
+    @if (darkmode) {
+        @media (prefers-color-scheme: dark) {
+            @content
+        }
+    }
 }
 
 
@@ -29,9 +38,17 @@ $light-oxford-blue: #02182b66;
 body {
     color: $oxford-blue;
     background-color: $light-white;
+    // overflow-x: hidden;
+
+    @include darkmode() {
+        background-color: $oxford-blue;
+        color: $white;
+    }
+  
 }
 
-button {
+
+.check-btn {
     width: 100%;
     padding: 0.8rem;
     font-size: 1rem;
@@ -42,15 +59,40 @@ button {
     max-width: 250px;
     background-color: $oxford-blue;
     color: $light-white;
+
+    @include darkmode() {
+        background-color: $middle-blue;
+        color: $oxford-blue;
+    }
+
+    &:hover {
+        color: #bdcded;
+    
+        @include darkmode() {
+            color: $light-oxford-blue
+        }
+    }
 }
 
-.check-btn:hover {
-    color: #bdcded;
-}
 
 .app {
     @include flexed();
     min-height: 100vh;
+
+    // &::before {
+    //     content: url(./public/blob-left.svg);
+    //     position: absolute;
+    //     left: -150px;
+    //     bottom: -150px;
+    // }
+
+    // &::after {
+    //     content: url(./public/blob-right.svg);
+    //     position: absolute;
+    //     right: -100px;
+    //     top: -120px;
+    //     // filter: opacity(0.5) drop-shadow(0 0 0 green);
+    // }
 }
 
 .home {
@@ -81,6 +123,11 @@ button {
         font-weight: bold;
         max-width: none;
         transition: 0.2s ease-in-out;
+
+        @include darkmode() {
+            border-color: $light-dark-blue;
+            color: $white;
+        }
 
         &:hover {
             background-color: $blue-munsell;
@@ -123,3 +170,84 @@ button {
     flex-wrap: wrap;
     gap: 1rem;
 }
+
+.theme-icon-container {
+    background-color: transparent;
+    border: 2px solid $oxford-blue;
+    border-radius: 50%;
+    padding: 0.5rem;
+    font-size: 0;
+    align-self: flex-end;
+    cursor: pointer;
+
+    @include darkmode() {
+        border-color: $light-white;
+    }
+
+    svg {
+        fill: $oxford-blue;
+        font-size: 2rem;
+
+        @include darkmode() {
+            fill: $light-white;
+        }
+    }
+}
+
+.dark {
+    background-color: $oxford-blue;
+    color: $white;
+
+    .check-btn {
+        background-color: $middle-blue;
+        color: $oxford-blue;
+    }
+
+    .check-btn:hover {
+        color: $light-oxford-blue
+    }
+
+    .answer-btn {
+        border-color: $light-dark-blue;
+        color: $white;
+    }
+
+
+    .theme-icon-container {
+        border-color: $light-white;
+    
+        svg {
+            fill: $light-white;
+        }
+    }
+}
+
+.light {
+    background-color: $light-white;
+    color: $oxford-blue;
+
+    .check-btn {
+        background-color: $oxford-blue;
+        color: $light-white;
+
+        &:hover {
+            color: #bdcded;
+        }
+    }
+
+
+    .answer-btn {
+        border-color: $oxford-blue;
+        color: $oxford-blue;
+    }
+
+
+    .theme-icon-container {
+        border-color: $oxford-blue;
+    
+        svg {
+            fill: $oxford-blue;
+        }
+    }
+}
+
