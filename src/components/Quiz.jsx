@@ -2,7 +2,6 @@ import { decode } from "html-entities"
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import AnswerOption from "./AnswerOption"
-import { nanoid } from "nanoid"
 
 
 
