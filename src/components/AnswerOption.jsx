@@ -4,7 +4,7 @@
 
 
 function AnswerOption(props) {
-        
+
         const darkmodeStyles = {
 
                 backgroundColor: props.endQuiz ? (props.selected ? (props.isCorrect ? "#358A47" : "#d7263d") : (props.isCorrect ? "#358A47" :"none")) : (props.selected ? "#448FA3" : "none"),

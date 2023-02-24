@@ -31,6 +31,7 @@ function Quiz(props) {
                 <Skeleton 
                 baseColor={props.darkmode ? "#353536" : "#ebebeb"} 
                 highlightColor={props.darkmode ? "#403e3e" : "#f5f5f5"}
+                className="skeleton"
                 /> 
                 : decode(props.question)
                 }
@@ -46,6 +47,7 @@ function Quiz(props) {
                 baseColor={props.darkmode ? "#353536" : "#ebebeb"} 
                 highlightColor={props.darkmode ? "#403e3e" : "#f5f5f5"}
                 containerClassName="answers-skeleton" 
+                className="skeleton"
                 /> 
                 : answerElements
                 }

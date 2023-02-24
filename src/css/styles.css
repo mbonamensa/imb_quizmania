@@ -196,4 +196,8 @@ body {
 }
 .light .theme-icon-container svg {
   fill: #02182B;
+}
+
+.skeleton {
+  color: red;
 }/*# sourceMappingURL=styles.css.map */

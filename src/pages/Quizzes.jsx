@@ -65,7 +65,6 @@ function Quizzes() {
            return quizElement.answers.some(answer => answer.isSelected)
         })
 
-        // console.log(allAnswerschecked)
         if(allAnswerschecked) {
             setAllAnswersSelected(true)
         }else {
@@ -74,32 +73,23 @@ function Quizzes() {
 
     }, [quiz])
 
-    useEffect(() => {
-
-        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-
-            document.body.classList.toggle("light")
-        }else if (window.matchMedia("(prefers-color-scheme: light)").matches){
-
-            document.body.classList.toggle("dark")
-        }
-   
-        
-    }, [darkmode])
-
-    
-    useEffect(() => {
-        checkUserDarkTheme()
-
-    })
 
     function checkUserDarkTheme() {
        return (window.matchMedia("(prefers-color-scheme: dark)").matches)
     }
 
-
     function toggleTheme() {
+
         setDarkmode(prevMode => !prevMode)
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+
+            document.body.classList.toggle("light")
+        }else {
+            document.body.classList.toggle("dark")
+
+        }
+        
+       
     }
 
     console.log(darkmode)
@@ -196,11 +186,6 @@ function Quizzes() {
         <div className="quizzes">
 
                 <button className="theme-icon-container" onClick={toggleTheme}>Toggle theme {darkmode ? <MdOutlineLightMode /> : <MdOutlineDarkMode />}</button>
-
-            {/* <div className="theme-container">
-                <p>Toggle theme</p>
-                <button className="theme-icon-container" onClick={toggleTheme}>{darkmode ? <MdOutlineLightMode /> : <MdOutlineDarkMode />}</button>
-            </div> */}
             {quizStart ?
                 
                 (  <>
