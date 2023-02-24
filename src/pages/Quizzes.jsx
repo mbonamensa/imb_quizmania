@@ -3,6 +3,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import { useEffect, useState } from "react"
 import Quiz from "../components/Quiz"
 import Welcome from "./Welcome"
+import NavBar from "../components/NavBar"
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md"
 
 
@@ -183,31 +184,35 @@ function Quizzes() {
     }
 
     return (
-        <div className="quizzes">
+        <>
+        <NavBar toggleTheme={toggleTheme} darkmode={darkmode}/>
+        <div className="quizzes-main-wrapper">
+            <div className="quizzes">
 
-                <button className="theme-icon-container" onClick={toggleTheme}>Toggle theme {darkmode ? <MdOutlineLightMode /> : <MdOutlineDarkMode />}</button>
-            {quizStart ?
-                
-                (  <>
-                    <div className="quizzes--container">                
-                        {quizElements}
-                    </div>
-                    <div className="checks">
-                        {endQuiz && <p>You scored {score}/5</p>}
-                        <button
-                            className="check-btn" 
-                            disabled={allAnswersSelected ? false : true} 
-                            onClick={endQuiz ? startQuiz : checkAnswers}
-                            style={buttonStyle }
-                        >{endQuiz ? "Play again" : "Check answers"}</button>
-                    </div>
-                   
-                    </>
-                )
-                :
-                <Welcome startQuiz={startQuiz}/>
-            }
+                {quizStart ?
+                    
+                    (  <>
+                        <div className="quizzes--container">                
+                            {quizElements}
+                        </div>
+                        <div className="checks">
+                            {endQuiz && <p>You scored {score}/5</p>}
+                            <button
+                                className="check-btn" 
+                                disabled={allAnswersSelected ? false : true} 
+                                onClick={endQuiz ? startQuiz : checkAnswers}
+                                style={buttonStyle }
+                            >{endQuiz ? "Play again" : "Check answers"}</button>
+                        </div>
+                    
+                        </>
+                    )
+                    :
+                    <Welcome startQuiz={startQuiz}/>
+                }
+            </div>
         </div>
+        </>
     )
 }
 

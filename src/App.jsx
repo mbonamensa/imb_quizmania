@@ -1,3 +1,4 @@
+import NavBar from "./components/NavBar"
 import "./css/styles.css"
 import Quizzes from "./pages/Quizzes"
 
